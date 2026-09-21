@@ -14,9 +14,6 @@ print(sys.path)
 import pytest                              # ← pytest doesn't depend on path, fine anywhere
 from backend import db_helper              # ← THIS must come AFTER sys.path.insert
 
-
-
-from backend import db_helper
 def pytest_configure(config):
     """
     Pytest calls this automatically once, before any test runs.

@@ -127,7 +127,7 @@ def get_expense_summary_by_month():
             SELECT 
                 MONTHNAME(expense_date) AS month,
                 SUM(amount) AS total
-            FROM expense_manager_test.expenses
+            FROM expenses
             GROUP BY 
                 YEAR(expense_date),
                 MONTH(expense_date),

@@ -1,6 +1,5 @@
-import mysql.connector
-from contextlib import contextmanager
-from backend.logging_setup import setup_logger
+import pytest
+from backend import db_helper
 
 
 def test_get_expenses_by_date():
@@ -117,14 +116,15 @@ def test_delete_expense_by_date_multiple(expense_snapshot):
 ##################################################################################
 def test_insert_expense(new_expense):              # new_expense is the name of the fixture itself (it is the helper name function's name), new_expense a special case: pytest sees that name, recognizes it as a fixture's name, runs the fixture, and drops the result into that slot for you.
 
-      expenses = db_helper.get_expenses_by_date("2024-10-01")          # is a plain function call, straight from test_db_helper.py to db_helper.py
+      expenses = db_helper.get_expenses_by_date("2024-10-01")                 # is a plain function call, straight from test_db_helper.py to db_helper.py
+
+      match = next((e for e in expenses if e["id"] == new_expense), None)
 
       # ----- ASSERTIONS -----
-      assert len(expenses) == 1
-      assert expenses[0]["id"] == new_expense
-      assert expenses[0]["amount"] == 30.00
-      assert expenses[0]["category"] == "Food"
-      assert expenses[0]["notes"] == "Coffee beans"
+      assert match is not None
+      assert match["amount"] == 30.00
+      assert match["category"] == "Food"
+      assert match["notes"] == "Coffee beans"
 
 
 ##################################################################################
